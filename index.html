@@ -12,10 +12,43 @@
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+		<!--  -->
+		<style>
+			.table-container {
+			display: flex;
+			justify-content: space-around;
+			position: relative;
+			}
+			table {
+			border-collapse: collapse;
+			border-spacing: 0;       /* remove any default spacing */
+			border: 1.5px solid #333;  /* <= add this for the outer border */
+			margin: 20px;
+			}
+			td, th {
+			border: 1.5px solid #333;
+			padding: 8px 12px;
+			text-align: center;
+			}
+			svg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			pointer-events: none;
+			width: 100%;
+			height: 100%;
+			}
+			.reveal .slides section {
+				overflow: visible !important;
+			}
+		</style>
+
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
+
 				<section>
 					<h3>Sketched Sum-Product Networks for Joins</h3>
 					<!-- add a horizontal line to separate authors from the title -->
@@ -23,6 +56,7 @@
 					<p>Brian Tsan</p>
 					<p>btsan@ucmerced.edu</p>
 				</section>
+
 				<section>
 					<!-- Distinct header pinned to the very top of this slide -->
 					 <header>
@@ -37,18 +71,51 @@
 						</ul>
 					</div>
 				</section>
-				<section>
+
+				<section data-auto-animate>
 					<header>
 						<h4>Joins</h4>
 					</header>
 					<div>
-						<p>A join is a database operation that retrieves from multiple sources, e.g., tables.</p>
+						<p>A <b>join</b> is a database operation that retrieves from multiple sources, e.g., tables.</p>
 					</div>
-					<div>
-						<!-- illustration of a simple two-way join -->
-						 
+					<div class="table-container">
+						<table data-id="left-table">
+							<tr><th>ID</th><th>Name</th></tr>
+							<tr><td>1</td><td>Alice</td></tr>
+							<tr><td>2</td><td>Bob</td></tr>
+							<tr><td>3</td><td>Carol</td></tr>
+						</table>
+						<table data-id="right-table">
+							<tr><th>ID</th><th>Score</th></tr>
+							<tr><td>2</td><td>88</td></tr>
+							<tr><td>3</td><td>92</td></tr>
+							<tr><td>4</td><td>75</td></tr>
+						</table>
 					</div>
 				</section>
+
+				<section id="join-slide" class="join-slide" data-auto-animate>
+					<div class="table-container">
+						<table data-id="left-table">
+							<tr><th>ID</th><th>Name</th></tr>
+							<tr><td>1</td><td>Alice</td></tr>
+							<tr id="left-row-2"><td>2</td><td>Bob</td></tr>
+							<tr id="left-row-3"><td>3</td><td>Carol</td></tr>
+						</table>
+						<table data-id="right-table">
+							<tr><th>ID</th><th>Score</th></tr>
+							<tr id="right-row-2"><td>2</td><td>88</td></tr>
+							<tr id="right-row-3"><td>3</td><td>92</td></tr>
+							<tr><td>4</td><td>75</td></tr>
+						</table>
+					</div>
+
+					<!-- SVG lines between matching rows to be populated via JS -->
+					<svg>
+					</svg>
+				</section>
+
 			</div>
 		</div>
 
@@ -56,6 +123,9 @@
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
+		<script src="animations.js">
+			//custom animations
+		</script> 
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
@@ -69,6 +139,18 @@
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
+
+			function onMaybeDraw() {
+				const slide = Reveal.getCurrentSlide();
+				if (slide && slide.id === 'join-slide') {
+					drawJoinLines();
+				}
+			}
+
+			Reveal.on('ready',       onMaybeDraw);
+			Reveal.on('slidechanged', onMaybeDraw);
+			Reveal.on('resize',      onMaybeDraw);
+
 		</script>
 	</body>
 </html>
