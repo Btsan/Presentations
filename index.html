@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Sketched SPNs</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/serif.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h3>Sketched Sum-Product Networks for Joins</h3>
+					<!-- add a horizontal line to separate authors from the title -->
+					<hr>
+					<p>Brian Tsan</p>
+					<p>btsan@ucmerced.edu</p>
+				</section>
+				<section>
+					<!-- Distinct header pinned to the very top of this slide -->
+					 <header>
+						<h4>Core Concepts</h4>
+					 </header>
+					<!-- Content container pushed down so it doesn't overlap the header -->
+					<div style="padding-top:72px;">
+						<ul>
+							<li>Joins</li>
+							<li>Fast-AGMS Sketches</li>
+							<li>Sum-Product Networks</li>
+						</ul>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// add slide number
+				slideNumber: "c/t",
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
