@@ -15,32 +15,57 @@
 
 		<!--  -->
 		<style>
+			:root {
+				--palered:    rgb(255, 204, 204);
+				--palegreen:  rgb(204, 221, 170);
+				--palecyan:   rgb(204, 238, 255);
+			}
+
 			.table-container {
-			display: flex;
-			justify-content: space-around;
-			position: relative;
+				display: flex;
+				justify-content: space-around;
+				position: relative;
 			}
 			table {
-			border-collapse: collapse;
-			border-spacing: 0;       /* remove any default spacing */
-			border: 1.5px solid #333;  /* <= add this for the outer border */
-			margin: 20px;
+				border-collapse: collapse;
+				border-spacing: 0;       /* remove any default spacing */
+				border: 1.5px solid #333;  /* <= add this for the outer border */
+				margin: 20px;
 			}
 			td, th {
-			border: 1.5px solid #333;
-			padding: 8px 12px;
-			text-align: center;
+				overflow: hidden;
+				border: 1.5px solid #333;
+				border-collapse: collapse;
+				padding: 8px 12px;
+				text-align: center;
+				transition: background-color 0.6s ease;
 			}
 			svg {
-			position: absolute;
-			top: 0;
-			left: 0;
-			pointer-events: none;
-			width: 100%;
-			height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				pointer-events: none;
+				width: 100%;
+				height: 100%;
 			}
 			.reveal .slides section {
 				overflow: visible !important;
+			}
+
+			.flattened {
+				height: 0 !important;
+				padding: 0 !important;
+				font-size: 0 !important;
+				transition: all 0.6s ease;
+			}
+
+			.flattened td {
+				padding: 0 !important;
+				border: none;
+			}
+
+			.flattened .cell-text {
+				opacity: 0;
 			}
 		</style>
 
@@ -60,7 +85,7 @@
 				<section>
 					<!-- Distinct header pinned to the very top of this slide -->
 					 <header>
-						<h4>Core Concepts</h4>
+						<h4>Concepts</h4>
 					 </header>
 					<!-- Content container pushed down so it doesn't overlap the header -->
 					<div style="padding-top:72px;">
@@ -72,50 +97,381 @@
 					</div>
 				</section>
 
-				<section data-auto-animate>
-					<header>
-						<h4>Joins</h4>
-					</header>
-					<div>
-						<p>A <b>join</b> is a database operation that retrieves from multiple sources, e.g., tables.</p>
-					</div>
-					<div class="table-container">
-						<table data-id="left-table">
-							<tr><th>ID</th><th>Name</th></tr>
-							<tr><td>1</td><td>Alice</td></tr>
-							<tr><td>2</td><td>Bob</td></tr>
-							<tr><td>3</td><td>Carol</td></tr>
-						</table>
-						<table data-id="right-table">
-							<tr><th>ID</th><th>Score</th></tr>
-							<tr><td>2</td><td>88</td></tr>
-							<tr><td>3</td><td>92</td></tr>
-							<tr><td>4</td><td>75</td></tr>
-						</table>
-					</div>
+				<section>
+					<section data-auto-animate>
+						<header>
+							<h4>Joins</h4>
+						</header>
+						<div>
+							<p>A <b>join</b> is a database operation that combines multiple tables.</p>
+						</div>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Name</th></tr>
+								<tr><td>1</td><td>Alice</td></tr>
+								<tr><td>2</td><td>Bob</td></tr>
+								<tr><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Score</th></tr>
+								<tr><td>2</td><td>88</td></tr>
+								<tr><td>3</td><td>92</td></tr>
+								<tr><td>4</td><td>75</td></tr>
+							</table>
+						</div>
+					</section>
+
+					<section id="join-slide" class="join-slide"  data-auto-animate>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Name</th></tr>
+								<tr data-id="left-unjoined-row"><td>1</td><td>Alice</td></tr>
+								<tr id="left-row-2"><td>2</td><td>Bob</td></tr>
+								<tr id="left-row-3"><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Score</th></tr>
+								<tr id="right-row-2"><td>2</td><td>88</td></tr>
+								<tr id="right-row-3"><td>3</td><td>92</td></tr>
+								<tr data-id="right-unjoined-row"><td>4</td><td>75</td></tr>
+							</table>
+						</div>
+
+						<!-- SVG lines between matching rows to be populated via JS -->
+						<svg>
+						</svg>
+
+						<p>A join takes quadratic time! </p>
+						\( \mathcal{O}(n\times m) \)
+					</section>
+
+					<section data-auto-animate>
+						<div class="table-container" style="gap: 0; justify-content: center;">
+							<table data-id="left-table" style="margin-right: 0;">
+								<tr><th>ID</th><th>Name</th></tr>
+								<tr data-id="left-unjoined-row" class="flattened"><td><span class="cell-text">1</span></td><td><span class="cell-text">Alice</span></td></tr>
+								<tr id="left-row-2" style="background-color: var(--palered);"><td>2</td><td>Bob</td></tr>
+								<tr id="left-row-3" style="background-color: var(--palecyan);"><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="right-table" style="margin-left: 0;">
+								<tr><th>Score</th></tr>
+								<tr id="right-row-2" style="background-color: var(--palered);"><td>88</td></tr>
+								<tr id="right-row-3" style="background-color: var(--palecyan);"><td>92</td></tr>
+								<tr data-id="right-unjoined-row" class="flattened"><td><span class="cell-text">4</td><td><span class="cell-text">75</span></td></tr>
+							</table>
+						</div>
+					</section>
 				</section>
 
-				<section id="join-slide" class="join-slide" data-auto-animate>
-					<div class="table-container">
-						<table data-id="left-table">
-							<tr><th>ID</th><th>Name</th></tr>
-							<tr><td>1</td><td>Alice</td></tr>
-							<tr id="left-row-2"><td>2</td><td>Bob</td></tr>
-							<tr id="left-row-3"><td>3</td><td>Carol</td></tr>
-						</table>
-						<table data-id="right-table">
-							<tr><th>ID</th><th>Score</th></tr>
-							<tr id="right-row-2"><td>2</td><td>88</td></tr>
-							<tr id="right-row-3"><td>3</td><td>92</td></tr>
-							<tr><td>4</td><td>75</td></tr>
-						</table>
-					</div>
+				<section>
+					<section data-auto-animate  data-auto-animate-restart>
+						<header style="margin-bottom: 20px;">
+							<h4>Multi-way Joins</h4>
+							<p>How to join more than 2 tables?</p>
+						</header>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Student</th></tr>
+								<tr><td>1</td><td>Alice</td></tr>
+								<tr><td>2</td><td>Bob</td></tr>
+								<tr><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr><td>1</td><td>101</td></tr>
+								<tr><td>2</td><td>101</td></tr>
+								<tr><td>2</td><td>102</td></tr>
+								<tr><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Course</th></tr>
+								<tr><td>101</td><td>Calc I</td></tr>
+								<tr><td>102</td><td>Lit I</td></tr>
+							</table>
+						</div>
+					</section>
 
-					<!-- SVG lines between matching rows to be populated via JS -->
-					<svg>
-					</svg>
+					<section data-auto-animate>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Student</th></tr>
+								<tr><td>1</td><td>Alice</td></tr>
+								<tr><td>2</td><td>Bob</td></tr>
+								<tr><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr><td>1</td><td>101</td></tr>
+								<tr><td>2</td><td>101</td></tr>
+								<tr><td>2</td><td>102</td></tr>
+								<tr><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Course</th></tr>
+								<tr><td>101</td><td>Calc I</td></tr>
+								<tr><td>102</td><td>Lit I</td></tr>
+							</table>
+						</div>
+
+						<p>Join with <b>Students</b> (left) or <b>Courses</b> (right) first?</p>
+					</section>
+					
+					<section id="join-student-slide-1" data-auto-animate>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Student</th></tr>
+								<tr id><td>1</td><td>Alice</td></tr>
+								<tr><td>2</td><td>Bob</td></tr>
+								<tr style="font-size: 0;"><td>2</td><td>Bob</td></tr>
+								<tr><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr><td>1</td><td>101</td></tr>
+								<tr><td>2</td><td>101</td></tr>
+								<tr><td>2</td><td>102</td></tr>
+								<tr><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Course</th></tr>
+								<tr><td>101</td><td>Calc I</td></tr>
+								<tr><td>102</td><td>Lit I</td></tr>
+							</table> 
+						</div>
+
+						<p>Cost of joining with <b>Students</b> (left) first:</p>
+						<p>\( \lvert \mathrm{Students} \rvert \times \lvert \mathrm{Enrolled} \rvert = 12\)</p>
+					</section>
+					
+					<section id="join-student-slide-2" data-auto-animate>
+						<div class="table-container" style="gap: 0; justify-content: center;">
+							<table data-id="left-table" style="margin-right: 0;">
+								<tr><th>Student</th></tr>
+								<tr style="background-color: var(--palered);"><td>Alice</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>Bob</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>Bob</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table" style="margin-left: 0; margin-right: 0;">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr style="background-color: var(--palered);"><td>1</td><td>101</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>2</td><td>101</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>2</td><td>102</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Course</th></tr>
+								<tr><td>101</td><td>Calc I</td></tr>
+								<tr style="font-size: 0;"><td>101</td><td>Calc I</td></tr>
+								<tr><td>102</td><td>Lit I</td></tr>
+								<tr style="font-size: 0;"><td>102</td><td>Lit I</td></tr>
+							</table> 
+						</div>
+
+						<p>Cost of joining with <b>Students</b> (left) first:</p>
+						<p>\( \lvert \mathrm{Students} \rvert \times \lvert \mathrm{Enrolled} \rvert = 12\)</p>
+						<p>\( + \lvert \mathrm{Students} \bowtie \mathrm{Enrolled} \rvert \times \lvert \mathrm{Courses} \rvert = 24\)</p>
+					</section>
+
+					<section id="join-student-slide-3" data-auto-animate>
+						<div class="table-container" style="gap: 0; justify-content: center;">
+							<table data-id="left-table" style="margin-right: 0;">
+								<tr><th>Student</th></tr>
+								<tr style="background-color: var(--palered);"><td>Alice</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>Bob</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>Bob</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table" style="margin-left: 0; margin-right: 0;">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr style="background-color: var(--palered);"><td>1</td><td>101</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>2</td><td>101</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>2</td><td>102</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table" style="margin-left: 0;">
+								<tr><th>Course</th></tr>
+								<tr style="background-color: var(--palered);"><td>Calc I</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>Calc I</td></tr>
+								<tr style="background-color: var(--palegreen);"><td>Lit I</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Lit I</td></tr>
+							</table> 
+						</div>
+
+						<p>Cost of joining with <b>Students</b> (left) first:</p>
+						<p>\( \lvert \mathrm{Students} \rvert \times \lvert \mathrm{Enrolled} \rvert = 12\)</p>
+						<p>\( + \lvert \mathrm{Students} \bowtie \mathrm{Enrolled} \rvert \times \lvert \mathrm{Courses} \rvert = 24\)</p>
+					</section>
+
+					<section id="join-courses-slide-1" data-auto-animate>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Student</th></tr>
+								<tr><td>1</td><td>Alice</td></tr>
+								<tr><td>2</td><td>Bob</td></tr>
+								<tr><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr><td>1</td><td>101</td></tr>
+								<tr><td>2</td><td>101</td></tr>
+								<tr><td>2</td><td>102</td></tr>
+								<tr><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Course</th></tr>
+								<tr><td>101</td><td>Calc I</td></tr>
+								<tr style="font-size: 0;"><td>101</td><td>Calc I</td></tr>
+								<tr><td>102</td><td>Lit I</td></tr>
+								<tr style="font-size: 0;"><td>102</td><td>Lit I</td></tr>
+							</table> 
+						</div>
+
+						<p>Cost of joining with <b>Courses</b> (right) first:</p>
+						<p>\( \lvert \mathrm{Enrolled} \rvert \times \lvert \mathrm{Courses} \rvert = 8\)</p>
+					</section>
+
+					<section id="join-courses-slide-2" data-auto-animate>
+						<div class="table-container" style="gap: 0; justify-content: center;">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Student</th></tr>
+								<tr><td>1</td><td>Alice</td></tr>
+								<tr><td>2</td><td>Bob</td></tr>
+								<tr style="font-size: 0;"><td>2</td><td>Bob</td></tr>
+								<tr><td>3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table" style="margin-right: 0;">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr style="background-color: var(--palered);"><td>1</td><td>101</td></tr>
+								<tr style="background-color: var(--palered);"><td>2</td><td>101</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>2</td><td>102</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table" style="margin-left: 0;">
+								<tr><th>Course</th></tr>
+								<tr style="background-color: var(--palered);"><td>Calc I</td></tr>
+								<tr style="background-color: var(--palered);"><td>Calc I</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Lit I</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Lit I</td></tr>
+							</table> 
+						</div>
+
+						<p>Cost of joining with <b>Courses</b> (right) first:</p>
+						<p>\( \lvert \mathrm{Enrolled} \rvert \times \lvert \mathrm{Courses} \rvert = 8\)</p>
+						<p>\( + \lvert \mathrm{Students} \rvert \times \lvert \mathrm{Enrolled} \Join \mathrm{Courses} \rvert = 20\)</p>
+					</section>
+					
+					<section data-auto-animate>
+						<div class="table-container" style="gap: 0; justify-content: center;">
+							<table data-id="left-table" style="margin-right: 0;">
+								<tr><th>Student</th></tr>
+								<tr style="background-color: var(--palered);"><td>Alice</td></tr>
+								<tr style="background-color: var(--palered);"><td>Bob</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Bob</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Carol</td></tr>
+							</table>
+							<table data-id="middle-table" style="margin-left: 0; margin-right: 0;">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr style="background-color: var(--palered);"><td>1</td><td>101</td></tr>
+								<tr style="background-color: var(--palered);"><td>2</td><td>101</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>2</td><td>102</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table" style="margin-left: 0;">
+								<tr><th>Course</th></tr>
+								<tr style="background-color: var(--palered);"><td>Calc I</td></tr>
+								<tr style="background-color: var(--palered);"><td>Calc I</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Lit I</td></tr>
+								<tr style="background-color: var(--palecyan);"><td>Lit I</td></tr>
+							</table> 
+						</div>
+
+						<p>Cost of joining with <b>Courses</b> (right) first:</p>
+						<p>\( \lvert \mathrm{Enrolled} \rvert \times \lvert \mathrm{Courses} \rvert = 8\)</p>
+						<p>\( + \lvert \mathrm{Students} \rvert \times \lvert \mathrm{Enrolled} \Join \mathrm{Courses} \rvert = 20\)</p>
+						<em>Same result, lower cost!</em>
+					</section>
 				</section>
 
+				<section>
+					<section data-auto-animate>
+						<header style="margin-bottom: 20px;">
+							<h4>Joins Subject to Filters</h4>
+							<p>Where the join inputs have unknown sizes.</p>
+						</header>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Student</th><th>Year</th></tr>
+								<tr><td>1</td><td>Alice</td><td>2</td></tr>
+								<tr><td>2</td><td>Bob</td><td>1</td></tr>
+								<tr><td>3</td><td>Carol</td><td>2</td></tr>
+							</table>
+							<table data-id="middle-table">
+								<tr><th>SID</th><th>CID</th></tr>
+								<tr><td>1</td><td>101</td></tr>
+								<tr><td>2</td><td>101</td></tr>
+								<tr><td>2</td><td>102</td></tr>
+								<tr><td>3</td><td>102</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Course</th></tr>
+								<tr><td>101</td><td>Calc I</td></tr>
+								<tr><td>102</td><td>Lit I</td></tr>
+							</table>
+						</div>
+						\( \sigma_{\mathrm{Year}=1}(\mathrm{Students}) \Join \mathrm{Enrolled} \Join \mathrm{Courses} \)
+					</section>
+				</section>
+
+				<section>
+					<section data-auto-animate data-auto-animate-restart>
+						<header style="margin-bottom: 20px;">
+							<h4>Sketches</h4>
+							<p>A probabilistic estimator for frequencies.</p>
+						</header>
+						<div class="table-container">
+							<table data-id="left-table">
+								<tr><th>ID</th><th>Name</th></tr>
+								<tr><td data-id="l1">1</td><td>Alice</td></tr>
+								<tr><td data-id="l2">2</td><td>Bob</td></tr>
+								<tr><td data-id="l3">3</td><td>Carol</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><th>ID</th><th>Score</th></tr>
+								<tr><td data-id="r1">2</td><td>88</td></tr>
+								<tr><td data-id="r2">3</td><td>92</td></tr>
+								<tr><td data-id="r3">4</td><td>75</td></tr>
+							</table>
+						</div>
+					</section>
+
+					<section id="hash-slide" data-auto-animate>
+						<div class="table-container" style="margin-bottom: 1in;">
+							<table data-id="left-table">
+								<tr><td data-id="l1">1</td><td data-id="l2">2</td><td data-id="l3">3</td></tr>
+							</table>
+							<table data-id="right-table">
+								<tr><td data-id="r1">2</td><td data-id="r2">3</td><td data-id="r3">4</td></tr>
+							</table>
+						</div>
+
+						<!-- To be populated in JS -->
+						<svg></svg>
+						
+						<div class="table-container">
+							<table data-id="left-hashes">
+								<tr><td data-id="l1">-1</td><td data-id="l2">1</td><td data-id="l3">-1</td></tr>
+							</table>
+							<table data-id="right-hashes">
+								<tr><td data-id="r1">1</td><td data-id="r2">-1</td><td data-id="r3">1</td></tr>
+							</table>
+						</div>
+
+						<p>Hash with $\xi: \mathbb{R} \rightarrow \pm 1$</p>
+						<p class="fragment">$\xi$ is also <b>pairwise independent</b>!</p>
+						<p class="fragment">\( \mathbb{E}\left[\xi(x)\xi(y)\right] = 0  \) for any $x \neq y$</p>
+					</section>
+				</section>
 			</div>
 		</div>
 
@@ -123,6 +479,7 @@
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
 		<script src="animations.js">
 			//custom animations
 		</script> 
@@ -131,19 +488,25 @@
 			// - https://revealjs.com/initialization/
 			// - https://revealjs.com/config/
 			Reveal.initialize({
+				// backgroundTransition: 'none',
 				hash: true,
 
 				// add slide number
 				slideNumber: "c/t",
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
 			});
 
 			function onMaybeDraw() {
 				const slide = Reveal.getCurrentSlide();
-				if (slide && slide.id === 'join-slide') {
-					drawJoinLines();
+				if (slide) {
+					if (slide.id === 'join-slide') {
+						drawJoinLines();
+					}
+					else if (slide.id === 'hash-slide') {
+						drawHashLines();
+					}
 				}
 			}
 
