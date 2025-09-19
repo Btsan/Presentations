@@ -745,25 +745,13 @@
 						<p class="fragment">We have the sketch of $\mathrm{Students}$ but not $\sigma_{\mathrm{Year}=1}(\mathrm{Students})$</p>
 						<p class="fragment">Proposed solution: generate the sketch using a <em>Sum-Product Network</em>!</p>
 					</section>
-					
+
 					<section style="font-size: 1.5rem;" data-auto-animate>
 						<header style="margin-bottom: 20px;">
 							<h4>Sum-Product Networks</h4>
 							<p>A probabilistic model for multivariate data</p>
 						</header>
-						<div class="table-container">
-							<table data-id="left-table">
-								<tr><th>ID</th><th>Student</th><th>Year</th></tr>
-								<tr><td>1</td><td>Alice</td><td>2</td></tr>
-								<tr><td>2</td><td>Bob</td><td>1</td></tr>
-								<tr><td>3</td><td>Carol</td><td>2</td></tr>
-							</table>
-						</div>
 
-						<p>Main idea: $P(X, Y) = P(X) \times P(Y)$ when $X$ and $Y$ are independent</p>
-					</section>
-
-					<section style="font-size: 1.5rem;" data-auto-animate>
 						<div class="table-container">
 							<table data-id="left-table">
 								<tr><th data-id="id">ID</th><th data-id="s">Student</th><th data-id="y">Year</th></tr>
@@ -975,6 +963,7 @@ Gens, R. &amp; Pedro, D.. (2013). Learning the Structure of Sum-Product Networks
 
 				// add slide number
 				slideNumber: "c/t",
+				pdfSeparateFragments: false,
 
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
